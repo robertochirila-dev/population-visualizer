@@ -1,11 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Country } from '../types';
-
-interface BarChartProps {
-  countries: Country[];
-  year: number;
-  displayCount?: number;
-}
+import { Country, BarChartProps } from '../types/index';
 
 const BarChart: React.FC<BarChartProps> = ({ 
   countries = [], 

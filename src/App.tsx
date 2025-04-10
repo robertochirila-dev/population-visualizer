@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import BarChart from './components/BarChart';
 import Pagination from './components/Pagination';
-import { PopulationData, YearData } from './types';
+import { PopulationData, YearData } from './types/index';
 import populationData from './generated.json';
 
 function App() {
@@ -9,7 +9,7 @@ function App() {
   const [years, setYears] = useState<number[]>([]);
   const [currentYear, setCurrentYear] = useState<number>(0);
   const [currentData, setCurrentData] = useState<YearData | null>(null);
-  const [displayCount, setDisplayCount] = useState<number>(15);
+  const displayCount = 15;
 
   useEffect(() => {
     // Load the population data
