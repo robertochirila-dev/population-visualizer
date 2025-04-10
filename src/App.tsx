@@ -43,12 +43,13 @@ function App() {
   const containerStyle = {
     minHeight: '100vh',
     backgroundColor: 'white',
-    padding: '2rem 1rem',
+    padding: 'clamp(1rem, 3vw, 2rem) clamp(0.5rem, 2vw, 1rem)',
   };
 
   const contentStyle = {
     maxWidth: '1200px',
     margin: '0 auto',
+    width: '100%',
   };
 
   const loadingStyle = {
@@ -59,12 +60,26 @@ function App() {
   };
 
   const loadingTextStyle = {
-    fontSize: '1.25rem',
+    fontSize: 'clamp(1rem, 2vw, 1.25rem)',
     color: '#6b7280',
   };
 
+  // Add media query for mobile devices
+  const mediaQueryStyles = `
+    @media (max-width: 640px) {
+      .app-container {
+        padding: 1.5rem 0.75rem;
+      }
+      
+      .loading-text {
+        font-size: 1.5rem;
+      }
+    }
+  `;
+
   return (
-    <div style={containerStyle}>
+    <div style={containerStyle} className="app-container">
+      <style>{mediaQueryStyles}</style>
       <div style={contentStyle}>
         {currentData ? (
           <>
@@ -82,7 +97,7 @@ function App() {
           </>
         ) : (
           <div style={loadingStyle}>
-            <p style={loadingTextStyle}>Loading data...</p>
+            <p style={loadingTextStyle} className="loading-text">Loading data...</p>
           </div>
         )}
       </div>

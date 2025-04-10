@@ -109,19 +109,21 @@ const BarChart: React.FC<BarChartProps> = ({
     maxWidth: '1200px',
     margin: '0 auto',
     fontFamily: 'system-ui, sans-serif',
+    padding: '0 1rem',
   };
   
   const titleStyle = {
-    fontSize: '3rem',
+    fontSize: 'clamp(1.5rem, 5vw, 3rem)',
     fontWeight: 900,
     textAlign: 'center' as const,
     marginTop: '1.5rem',
     marginBottom: '1.5rem',
+    wordWrap: 'break-word' as const,
   };
   
   const getYearStyle = () => {
     const baseStyle = {
-      fontSize: '3rem',
+      fontSize: 'clamp(1.5rem, 4vw, 3rem)',
       fontWeight: 400,
       textAlign: 'center' as const,
       color: '#9ca3af',
@@ -139,7 +141,7 @@ const BarChart: React.FC<BarChartProps> = ({
     display: 'flex',
     flexDirection: 'column' as const,
     gap: '0.625rem',
-    padding: '0 2rem',
+    padding: '0 clamp(0.5rem, 2vw, 2rem)',
     opacity: slideDirection ? 0 : 1,
     animation: slideDirection ? 'fadeIn 0.3s ease-in forwards 0.3s' : 'none',
   };
@@ -147,9 +149,9 @@ const BarChart: React.FC<BarChartProps> = ({
   const getRowStyle = (index: number) => {
     return {
       display: 'grid',
-      gridTemplateColumns: '2fr 8fr 2fr',
+      gridTemplateColumns: 'minmax(80px, 2fr) 8fr minmax(60px, 2fr)',
       alignItems: 'center',
-      height: '1.5rem',
+      height: 'clamp(1.25rem, 2vw, 1.5rem)',
       opacity: 0,
       transform: 'translateY(20px)',
       animation: `fadeInUp 0.5s ease forwards ${0.05 * index}s`,
@@ -159,12 +161,15 @@ const BarChart: React.FC<BarChartProps> = ({
   const countryNameStyle = {
     textAlign: 'right' as const,
     paddingRight: '1rem',
-    fontSize: '0.875rem',
+    fontSize: 'clamp(0.6rem, 1.5vw, 0.875rem)',
+    whiteSpace: 'nowrap' as const,
+    overflow: 'hidden' as const,
+    textOverflow: 'ellipsis' as const,
   };
   
   const populationStyle = {
     paddingLeft: '0.5rem',
-    fontSize: '0.75rem',
+    fontSize: 'clamp(0.6rem, 1.5vw, 0.75rem)',
     color: '#4b5563',
   };
   
@@ -226,17 +231,52 @@ const BarChart: React.FC<BarChartProps> = ({
     }
   `;
 
+  // Add additional media query for small screens
+  const mediaQueryStyles = `
+    @media (max-width: 640px) {
+      .bar-chart-container {
+        padding: 0.5rem;
+      }
+      
+      .bar-chart-title {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+      }
+      
+      .bar-chart-year {
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+      }
+      
+      .bar-chart-row {
+        height: 2rem;
+        margin-bottom: 0.75rem;
+      }
+      
+      .bar-chart-country {
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+      
+      .bar-chart-population {
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+    }
+  `;
+
   return (
-    <div style={containerStyle}>
+    <div style={containerStyle} className="bar-chart-container">
       <style>{animationKeyframes}</style>
-      <h1 style={titleStyle}>World Population By Year</h1>
-      <h2 style={getYearStyle()}>{year}</h2>
+      <style>{mediaQueryStyles}</style>
+      <h1 style={titleStyle} className="bar-chart-title">World Population By Year</h1>
+      <h2 style={getYearStyle()} className="bar-chart-year">{year}</h2>
       
       <div style={chartStyle} ref={chartRef}>
         {sortedCountries.map((country, index) => (
-          <div key={country._id} style={getRowStyle(index)}>
+          <div key={country._id} style={getRowStyle(index)} className="bar-chart-row">
             {/* Country Name Column */}
-            <div style={countryNameStyle}>{country.Country}</div>
+            <div style={countryNameStyle} title={country.Country} className="bar-chart-country">{country.Country}</div>
             
             {/* Progress Bar Column */}
             <div style={barContainerStyle}>
@@ -244,7 +284,7 @@ const BarChart: React.FC<BarChartProps> = ({
             </div>
             
             {/* Population Number Column */}
-            <div style={populationStyle}>{country.Population.toLocaleString()}</div>
+            <div style={populationStyle} className="bar-chart-population">{country.Population.toLocaleString()}</div>
           </div>
         ))}
       </div>
