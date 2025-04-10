@@ -15,32 +15,57 @@ const Pagination: React.FC<PaginationProps> = ({
   const hasPrevious = currentIndex > 0;
   const hasNext = currentIndex < years.length - 1;
 
+  const containerStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: '1rem',
+    margin: '2rem 0',
+  };
+
+  const buttonStyle = {
+    padding: '0.5rem 1rem',
+    borderRadius: '0.375rem',
+    transition: 'background-color 0.2s',
+  };
+
+  const activeButtonStyle = {
+    ...buttonStyle,
+    backgroundColor: '#3b82f6',
+    color: 'white',
+    cursor: 'pointer',
+  };
+
+  const disabledButtonStyle = {
+    ...buttonStyle,
+    backgroundColor: '#d1d5db',
+    color: '#6b7280',
+    cursor: 'not-allowed',
+  };
+
+  const yearStyle = {
+    fontSize: '1.125rem',
+    fontWeight: 500,
+  };
+
   return (
-    <div className="flex justify-center items-center space-x-4 my-8">
+    <div style={containerStyle}>
       <button
         onClick={() => hasPrevious && onYearChange(years[currentIndex - 1])}
         disabled={!hasPrevious}
-        className={`px-4 py-2 rounded-md transition-colors ${
-          hasPrevious 
-            ? 'bg-blue-500 text-white hover:bg-blue-600' 
-            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-        }`}
+        style={hasPrevious ? activeButtonStyle : disabledButtonStyle}
       >
         &larr; Previous Year
       </button>
       
-      <span className="text-lg font-medium">
+      <span style={yearStyle}>
         {currentYear}
       </span>
       
       <button
         onClick={() => hasNext && onYearChange(years[currentIndex + 1])}
         disabled={!hasNext}
-        className={`px-4 py-2 rounded-md transition-colors ${
-          hasNext 
-            ? 'bg-blue-500 text-white hover:bg-blue-600' 
-            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-        }`}
+        style={hasNext ? activeButtonStyle : disabledButtonStyle}
       >
         Next Year &rarr;
       </button>

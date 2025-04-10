@@ -9,7 +9,7 @@ function App() {
   const [years, setYears] = useState<number[]>([]);
   const [currentYear, setCurrentYear] = useState<number>(0);
   const [currentData, setCurrentData] = useState<YearData | null>(null);
-  const [displayCount, setDisplayCount] = useState<number>(10);
+  const [displayCount, setDisplayCount] = useState<number>(15);
 
   useEffect(() => {
     // Load the population data
@@ -19,7 +19,7 @@ function App() {
     // Extract list of years
     const yearsList = typedData.map(item => item.Year);
     setYears(yearsList);
-
+    
     // Set initial year to the first one in the dataset
     if (yearsList.length > 0) {
       setCurrentYear(yearsList[0]);
@@ -40,13 +40,32 @@ function App() {
     setCurrentYear(year);
   };
 
-  const toggleDisplayCount = () => {
-    setDisplayCount(displayCount === 10 ? 15 : 10);
+  const containerStyle = {
+    minHeight: '100vh',
+    backgroundColor: 'white',
+    padding: '2rem 1rem',
+  };
+
+  const contentStyle = {
+    maxWidth: '1200px',
+    margin: '0 auto',
+  };
+
+  const loadingStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '16rem',
+  };
+
+  const loadingTextStyle = {
+    fontSize: '1.25rem',
+    color: '#6b7280',
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8 px-4">
-      <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-md p-6">
+    <div style={containerStyle}>
+      <div style={contentStyle}>
         {currentData ? (
           <>
             <BarChart 
@@ -60,19 +79,10 @@ function App() {
               years={years} 
               onYearChange={handleYearChange} 
             />
-            
-            <div className="text-center mt-4">
-              <button 
-                onClick={toggleDisplayCount}
-                className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 transition-colors"
-              >
-                Show {displayCount === 10 ? '15' : '10'} Countries
-              </button>
-            </div>
           </>
         ) : (
-          <div className="flex justify-center items-center h-64">
-            <p className="text-xl text-gray-500">Loading data...</p>
+          <div style={loadingStyle}>
+            <p style={loadingTextStyle}>Loading data...</p>
           </div>
         )}
       </div>
