@@ -1,10 +1,5 @@
 import React from 'react';
-
-interface PaginationProps {
-  currentYear: number;
-  years: number[];
-  onYearChange: (year: number) => void;
-}
+import { PaginationProps } from '../types/index';
 
 const Pagination: React.FC<PaginationProps> = ({ 
   currentYear, 
